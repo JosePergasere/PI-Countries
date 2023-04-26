@@ -1,11 +1,11 @@
 import CardsContainers from "../../components/CardsContainer/CardsContainer";
-
+import style from "./Home.module.css";
 const Home = () => {
+  //**************************************************************************** */
   return (
-    <>
-      <h1>Esto es Home</h1>
-      <CardsContainers />
-    </>
+    <div className={style.home}>
+      <CardsContainers></CardsContainers>
+    </div>
   );
 };
 

@@ -5,7 +5,7 @@ module.exports = (sequelize) => {
     "Activity",
     {
       id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.INTEGER(3),
         primaryKey: true,
         autoIncrement: true,
         allowNull: false,
@@ -23,14 +23,14 @@ module.exports = (sequelize) => {
         },
       },
       duration: {
-        type: DataTypes.FLOAT,
+        type: DataTypes.INTEGER,
         validate: {
           min: 0,
         },
         allowNull: true,
       },
       season: {
-        type: DataTypes.ENUM("Summer", "Winter", "Spring", "Autumn"),
+        type: DataTypes.ENUM("Otoño", "Verano", "Primavera", "Invierno"),
         allowNull: false,
       },
     },

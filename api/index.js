@@ -21,9 +21,9 @@ const server = require("./src/app.js");
 const { conn } = require("./src/db.js");
 const getApiData = require("./src/controllers/saveApidata.js");
 // Syncing all the models at once.
-conn.sync({ force: true, alter: true }).then(() => {
+conn.sync({ force: false }).then(() => {
   getApiData();
   server.listen(3001, () => {
-    console.log("Server ON perreke"); // eslint-disable-line no-console
+    console.log("Server ON"); // eslint-disable-line no-console
   });
 });

@@ -1,82 +1,175 @@
+import { useState } from "react";
 import Card from "../Card/Card";
-
-const countries = [
-  {
-    id: "BRB",
-    name: "Barbados",
-    flag: "https://flagcdn.com/bb.svg",
-    continent: '{"North America"}',
-    capital: "Bridgetown",
-    subregion: "Caribbean",
-    area: 430,
-    population: 287371,
-  },
-  {
-    id: "REU",
-    name: "Réunion",
-    flag: "https://flagcdn.com/re.svg",
-    continent: "{Africa}",
-    capital: "Saint-Denis",
-    subregion: "Eastern Africa",
-    area: 2511,
-    population: 840974,
-  },
-  {
-    id: "SUR",
-    name: "Suriname",
-    flag: "https://flagcdn.com/sr.svg",
-    continent: '{"South America"}',
-    capital: "Paramaribo",
-    subregion: "South America",
-    area: 163820,
-    population: 586634,
-  },
-  {
-    id: "NAM",
-    name: "Namibia",
-    flag: "https://flagcdn.com/na.svg",
-    continent: "{Africa}",
-    capital: "Windhoek",
-    subregion: "Southern Africa",
-    area: 825615,
-    population: 2540916,
-  },
-  {
-    id: "GIN",
-    name: "Guinea",
-    flag: "https://flagcdn.com/gn.svg",
-    continent: "{Africa}",
-    capital: "Conakry",
-    subregion: "Western Africa",
-    area: 245857,
-    population: 13132792,
-  },
-  {
-    id: "VUT",
-    name: "Vanuatu",
-    flag: "https://flagcdn.com/vu.svg",
-    continent: "{Oceania}",
-    capital: "Port Vila",
-    subregion: "Melanesia",
-    area: 12189,
-    population: 307150,
-  },
-];
+import style from "./CardsContainer.module.css";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  filterContinent,
+  getCountries,
+  orderCountries,
+  orderPopulation,
+  filterActivity,
+  deleteAcitivty,
+} from "../../Redux/actions";
+import Pagination from "../Pagination/Pagination";
+import GetAll from "../Hooks/GetAll";
 
 const CardsContainer = () => {
+  const dispatch = useDispatch();
+  const { allCountries, countries, activities } = useSelector((state) => state);
+
+  GetAll();
+
+  const handlerOrderName = (event) => {
+    dispatch(orderCountries(event.target.value));
+    setPagina(1);
+  };
+
+  const handlerOrderPopulation = (event) => {
+    dispatch(orderPopulation(event.target.value));
+    setPagina(1);
+  };
+
+  const handlerAllCountries = () => {
+    dispatch(getCountries());
+
+    setPagina(1);
+  };
+
+  const handlerFilterContinent = (event) => {
+    dispatch(filterContinent(event.target.value));
+    setPagina(1);
+  };
+
+  const handlerFilterActivity = (event) => {
+    dispatch(filterActivity(event.target.value));
+    setPagina(1);
+  };
+
+  const handlerDeleteAcitivty = (event) => {
+    dispatch(deleteAcitivty(event.target.value));
+  };
+
+  //* PAGINADO
+
+  const [pagina, setPagina] = useState(1); // Seteo la pagina inicial
+  const paisesPorPagina = 10; // Seteo la cantidad de paises que quiero mostrar por pagina
+  const maximoDePaginas = Math.ceil(countries.length / paisesPorPagina); // Saco la cantidad total de paginas que necesito
+
   return (
-    <div>
-      {countries.map((country) => {
-        return (
-          <Card
-            key={country.id}
-            id={country.id}
-            name={country.name}
-            flag={country.flag}
-            continent={country.continent}
-          />
-        );
-      })}
+    <div className={style.container}>
+      <div className={style.buttonsContainer}>
+        <select
+          value={""}
+          className={style.select}
+          name="orderName"
+          onChange={handlerOrderName}
+        >
+          <option disabled={true}>Orden Alfabetico</option>
+          <option hidden>Elegir orden</option>
+          <option value="Ascendente">A-Z</option>
+          <option value="Descendente">Z-A</option>
+        </select>
+
+        <select
+          value={""}
+          className={style.select}
+          name="orderPopulation"
+          onChange={handlerOrderPopulation}
+        >
+          <option disabled={true}>Orden Poblacion</option>
+          <option hidden>Elegir orden</option>
+          <option value="Ascendente">Mayor</option>
+          <option value="Descendente">Menor</option>
+        </select>
+
+        <button className={style.select} onClick={handlerAllCountries}>
+          <span>Todos los paises</span>
+        </button>
+
+        <select
+          value={""}
+          className={style.select}
+          onChange={handlerFilterContinent}
+        >
+          <option hidden>Elegir Continente</option>
+          <option value="All">Todos los Continentes</option>
+          <option value="North America">North America</option>
+          <option value="South America">South America</option>
+          <option value="America">America</option>
+          <option value="Africa">Africa</option>
+          <option value="Antarctica">Antartica</option>
+          <option value="Asia">Asia</option>
+          <option value="Europe">Europe</option>
+          <option value="Oceania">Oceania</option>
+        </select>
+
+        <select
+          value={""}
+          className={style.select}
+          onChange={handlerFilterActivity}
+        >
+          <option hidden>Elegir Actividad</option>
+          <option disabled={true}>Seleccionar actividad</option>
+          {activities.map((activity) => (
+            <option value={activity.Countries.map((country) => country.id)}>
+              {activity.name}
+            </option>
+          ))}
+        </select>
+        <select
+          value={""}
+          className={style.select}
+          onChange={handlerDeleteAcitivty}
+        >
+          <option hidden>Borrar Actividad</option>
+          <option disabled={true}>Seleccionar actividad</option>
+          {activities.map((activity) => (
+            <option value={activity.id}>{activity.name}</option>
+          ))}
+        </select>
+      </div>
+      <div className={style.divPagination}>
+        <Pagination
+          setPagina={setPagina}
+          pagina={pagina}
+          maximoDePaginas={maximoDePaginas}
+        />
+      </div>
+      <div className={style.cardsContainer}>
+        {countries !== allCountries && countries.length !== 0
+          ? countries
+              ?.slice(
+                (pagina - 1) * paisesPorPagina,
+                (pagina - 1) * paisesPorPagina + paisesPorPagina
+              )
+              .map(({ id, name, flag, continent }) => {
+                return (
+                  <Card
+                    key={id}
+                    id={id}
+                    name={name}
+                    flag={flag}
+                    continent={continent}
+                  />
+                );
+              })
+          : countries
+              ?.slice(
+                (pagina - 1) * paisesPorPagina,
+                (pagina - 1) * paisesPorPagina + paisesPorPagina
+              )
+              .map(({ id, name, flag, continent }) => {
+                return (
+                  <Card
+                    key={id}
+                    id={id}
+                    name={name}
+                    flag={flag}
+                    continent={continent}
+                  />
+                );
+              })}
+      </div>
     </div>
   );
 };

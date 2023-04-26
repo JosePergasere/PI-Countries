@@ -7,18 +7,17 @@ const ActivityPost = async ({
   season,
   countries,
 }) => {
-  if (!countries) throw new Error("Debe enviar algo");
-  //! Convierto a countries en un array en caso de que me manden otra cosa, para asi luego poder mapearlo
+  if (!countries) throw new Error("Debe enviar algun pais");
   const arrayCountries = Array.isArray(countries) ? countries : [countries];
   //* Uso el metodo Promise.All para consultar en la DB si existen paises con los ID enviados
   const countriesFind = await Promise.all(
     arrayCountries.map((id) => Country.findByPk(id.toUpperCase()))
   );
   //* Valido si no se encontro ningun pais en la DB
-  if (!countriesFind.some((country) => !!country)) {
+  if (countriesFind.includes(undefined)) {
     throw new Error("No se encontraron países válidos");
   }
-  //* Creo un nuevo registro en la tabla Activity, con los datos traidos por parametro
+
   const newActivity = await Activity.create({
     name,
     difficulty,
@@ -26,7 +25,6 @@ const ActivityPost = async ({
     season,
   });
 
-  //* Utilizo el addCountries de newAcitivy para  darle los paises
   await newActivity.addCountries(countriesFind.filter((country) => !!country));
 
   return;
