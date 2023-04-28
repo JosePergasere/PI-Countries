@@ -45,7 +45,6 @@ export const searchCountries = (search) => {
       const dbData = await axios.get(
         `http://localhost:3001/countries/name?name=${search}`
       );
-
       return dispatch({
         type: SEARCH_COUNTRIES,
         payload: dbData.data.countriesFind,

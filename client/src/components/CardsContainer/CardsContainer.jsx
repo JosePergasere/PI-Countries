@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Card from "../Card/Card";
 import style from "./CardsContainer.module.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,6 +12,7 @@ import {
 } from "../../Redux/actions";
 import Pagination from "../Pagination/Pagination";
 import GetAll from "../Hooks/GetAll";
+import SetPage from "../Hooks/SetPage";
 
 const CardsContainer = () => {
   const dispatch = useDispatch();
@@ -19,41 +20,42 @@ const CardsContainer = () => {
 
   GetAll();
 
+  const [pagina, setPagina] = useState(1);
+  const paisesPorPagina = 10;
+  const maximoDePaginas = Math.ceil(countries.length / paisesPorPagina);
+
+  SetPage(setPagina);
+
   const handlerOrderName = (event) => {
     dispatch(orderCountries(event.target.value));
-    setPagina(1);
   };
 
   const handlerOrderPopulation = (event) => {
     dispatch(orderPopulation(event.target.value));
-    setPagina(1);
   };
 
   const handlerAllCountries = () => {
     dispatch(getCountries());
-
-    setPagina(1);
   };
 
   const handlerFilterContinent = (event) => {
     dispatch(filterContinent(event.target.value));
-    setPagina(1);
   };
 
   const handlerFilterActivity = (event) => {
     dispatch(filterActivity(event.target.value));
-    setPagina(1);
   };
 
   const handlerDeleteAcitivty = (event) => {
-    dispatch(deleteAcitivty(event.target.value));
+    const shouldDelete = window.confirm(
+      "¿Estás seguro que quieres borrar la actividad?"
+    );
+    if (shouldDelete) {
+      dispatch(deleteAcitivty(event.target.value));
+    }
   };
 
   //* PAGINADO
-
-  const [pagina, setPagina] = useState(1); // Seteo la pagina inicial
-  const paisesPorPagina = 10; // Seteo la cantidad de paises que quiero mostrar por pagina
-  const maximoDePaginas = Math.ceil(countries.length / paisesPorPagina); // Saco la cantidad total de paginas que necesito
 
   return (
     <div className={style.container}>
