@@ -15,7 +15,7 @@ const getActivitiesHandler = async (req, res) => {
 const postActivityHandler = async (req, res) => {
   const date = req.body;
   try {
-    const postActivity = await ActivityPost(date);
+    await ActivityPost(date);
     res.status(200).json("Actividad posteada con exito!!");
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -36,9 +36,10 @@ const putActivityHandler = async (req, res) => {
   const { id } = req.params;
   const date = req.body;
   try {
-    const putActivity = await ActivityPut(id, date);
-    res.status(200).json({ putActivity });
+    await ActivityPut(id, date);
+    res.status(200).json("Actividad modificada con exito!!");
   } catch (error) {
+    console.log(error);
     res.status(400).json({ error: error.message });
   }
 };

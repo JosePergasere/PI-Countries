@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-const SetPage = (setPagina) => {
+const SetPage = (setPage) => {
   const { countries } = useSelector((state) => state);
   useEffect(() => {
-    setPagina(1);
+    setPage(1);
   }, [countries]);
 };
 

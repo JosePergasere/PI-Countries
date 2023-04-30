@@ -11,6 +11,7 @@ import {
   GET_ACTIVITIES,
   FILTER_ACTIVITY,
   DELETE_ACTIVITY,
+  GET_ACTIVITY,
 } from "./action-types";
 
 const initialState = {
@@ -18,6 +19,7 @@ const initialState = {
   countries: [],
   country: {},
   activities: [],
+  activity: [],
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -120,6 +122,16 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         activities: activitiesFilter,
+      };
+    }
+    case GET_ACTIVITY: {
+      const ActivityFind = state.activities.find(
+        (activity) => activity.id == action.payload
+      );
+
+      return {
+        ...state,
+        activity: ActivityFind,
       };
     }
     default:

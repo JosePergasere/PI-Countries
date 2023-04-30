@@ -1,44 +1,41 @@
 import style from "./Pagination.module.css";
-const Pagination = ({ setPagina, pagina, maximoDePaginas }) => {
-  const funcionIrAPagina = (numeroDePagina) => {
-    setPagina(numeroDePagina);
+const Pagination = ({ setPage, page, maxPages }) => {
+  const functionGoToPage = (numberToPage) => {
+    setPage(numberToPage);
   };
-  const botones = Array.from(
-    { length: maximoDePaginas },
-    (_, index) => index + 1
-  );
+  const buttons = Array.from({ length: maxPages }, (_, index) => index + 1);
 
-  const funcionSiguiente = () => {
-    setPagina(pagina + 1);
+  const functionNext = () => {
+    setPage(page + 1);
   };
-  const funcionAnterior = () => {
-    setPagina(pagina - 1);
+  const functionPrev = () => {
+    setPage(page - 1);
   };
 
   return (
     <div className={style.divButtons}>
       <button
         className={style.button}
-        onClick={funcionAnterior}
-        disabled={pagina === 1 || pagina < 1}
+        onClick={functionPrev}
+        disabled={page === 1 || page < 1}
       >
         Previous Page
       </button>
-      {botones.map((numeroDePagina) => (
+      {buttons.map((numberToPage) => (
         <button
-          key={numeroDePagina}
+          key={numberToPage}
           className={`${style.buttons} ${
-            numeroDePagina === pagina ? style.active : ""
+            numberToPage === page ? style.active : ""
           }`}
-          onClick={() => funcionIrAPagina(numeroDePagina)}
+          onClick={() => functionGoToPage(numberToPage)}
         >
-          {numeroDePagina}
+          {numberToPage}
         </button>
       ))}
       <button
         className={style.button}
-        onClick={funcionSiguiente}
-        disabled={pagina === maximoDePaginas}
+        onClick={functionNext}
+        disabled={page === maxPages}
       >
         Next Page
       </button>

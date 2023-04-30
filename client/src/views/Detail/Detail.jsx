@@ -3,7 +3,6 @@ import style from "./Detail.module.css";
 import imagen from "../../Icons/tarjeta-de-direccion.png";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
 const Detail = () => {
-  //* Ejecucion del Hook
   const country = useCountry();
 
   return (
@@ -37,10 +36,13 @@ const Detail = () => {
             {country.Activities && country.Activities.length ? (
               country.Activities.map((activity) => (
                 <div className={style.activity} key={activity.id}>
-                  <p>Nombre: {activity.name}.</p>
-                  <p>Dificultad: {activity.difficulty}.</p>
-                  <p>Duración: {activity.duration} hs.</p>
-                  <p>Temporada: {activity.season}.</p>
+                  <p>Name: {activity.name}.</p>
+                  <p>Difficulty: {activity.difficulty}.</p>
+                  <p>Duration: {activity.duration} hs.</p>
+                  <p>Season: {activity.season}.</p>
+                  <Link to={`/editActivity/${activity.id}`}>
+                    Edit Information
+                  </Link>
                 </div>
               ))
             ) : (

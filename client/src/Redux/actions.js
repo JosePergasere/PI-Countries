@@ -10,6 +10,7 @@ import {
   FILTER_ACTIVITY,
   GET_ACTIVITIES,
   DELETE_ACTIVITY,
+  GET_ACTIVITY,
 } from "./action-types";
 
 export const getCountries = () => {
@@ -94,4 +95,8 @@ export const deleteAcitivty = (id) => {
       payload: id,
     });
   };
+};
+
+export const getActivity = (id) => {
+  return { type: GET_ACTIVITY, payload: id };
 };

@@ -20,11 +20,11 @@ const CardsContainer = () => {
 
   GetAll();
 
-  const [pagina, setPagina] = useState(1);
-  const paisesPorPagina = 10;
-  const maximoDePaginas = Math.ceil(countries.length / paisesPorPagina);
+  const [page, setPage] = useState(1);
+  const countriesForPage = 10;
+  const maxPages = Math.ceil(countries.length / countriesForPage);
 
-  SetPage(setPagina);
+  SetPage(setPage);
 
   const handlerOrderName = (event) => {
     dispatch(orderCountries(event.target.value));
@@ -54,8 +54,6 @@ const CardsContainer = () => {
       dispatch(deleteAcitivty(event.target.value));
     }
   };
-
-  //* PAGINADO
 
   return (
     <div className={style.container}>
@@ -131,18 +129,14 @@ const CardsContainer = () => {
         </select>
       </div>
       <div className={style.divPagination}>
-        <Pagination
-          setPagina={setPagina}
-          pagina={pagina}
-          maximoDePaginas={maximoDePaginas}
-        />
+        <Pagination setPage={setPage} page={page} maxPages={maxPages} />
       </div>
       <div className={style.cardsContainer}>
         {countries !== allCountries && countries.length !== 0
           ? countries
               ?.slice(
-                (pagina - 1) * paisesPorPagina,
-                (pagina - 1) * paisesPorPagina + paisesPorPagina
+                (page - 1) * countriesForPage,
+                (page - 1) * countriesForPage + countriesForPage
               )
               .map(({ id, name, flag, continent }) => {
                 return (
@@ -157,8 +151,8 @@ const CardsContainer = () => {
               })
           : countries
               ?.slice(
-                (pagina - 1) * paisesPorPagina,
-                (pagina - 1) * paisesPorPagina + paisesPorPagina
+                (page - 1) * countriesForPage,
+                (page - 1) * countriesForPage + countriesForPage
               )
               .map(({ id, name, flag, continent }) => {
                 return (
