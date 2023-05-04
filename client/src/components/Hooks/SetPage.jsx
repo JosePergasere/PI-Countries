@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
+
 const SetPage = (setPage) => {
   const { countries } = useSelector((state) => state);
   useEffect(() => {
